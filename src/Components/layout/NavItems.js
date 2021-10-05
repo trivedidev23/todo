@@ -5,13 +5,13 @@ const NavItems = () => {
   return (
     <>
       <Link to="/signin" className="nav-link">
-        Log Out
-      </Link>
-      <Link to="/signup" className="nav-link">
-        Sign Up
+        Sign Out
       </Link>
       <Link to="/signin" className="nav-link">
         Sign In
+      </Link>
+      <Link to="/signup" className="nav-link">
+        Sign Up
       </Link>
     </>
   );

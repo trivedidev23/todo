@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import TaskTable from "./TaskTable";
+import { addTask } from "../actions/taskActions";
+import { connect } from "react-redux";
 
-const AddTask = () => {
+const AddTask = ({ addTask }) => {
   const [task, setTask] = useState("");
 
   const handleChangeTask = (e) => {
-    e.preventDefault();
     setTask(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(task);
+    addTask(task);
+    // document.getElementById("addTaskForm").reset();
   };
   return (
     <>
       <form
+        id="addTaskForm"
         className="container"
-        autoComplete="off"
         onSubmit={handleSubmit}
+        autoComplete="off"
         style={{ marginTop: "30px" }}
       >
         <div className="mb-3">
@@ -43,4 +46,10 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+const mapDispatchtoProps = (dispatch) => {
+  return {
+    addTask: (task) => dispatch(addTask(task)),
+  };
+};
+
+export default connect(null, mapDispatchtoProps)(AddTask);

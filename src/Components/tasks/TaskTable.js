@@ -1,7 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 import SingleTask from "./SingleTask";
 
-const TaskTable = () => {
+const TaskTable = ({ todos }) => {
   return (
     <>
       <table
@@ -17,11 +20,27 @@ const TaskTable = () => {
           </tr>
         </thead>
         <tbody>
-          <SingleTask />
+          {todos &&
+            todos.map((task) => <SingleTask task={task} key={task.id} />)}
         </tbody>
       </table>
     </>
   );
 };
 
-export default TaskTable;
+const mapStateToProps = (state) => {
+  const todos = state.firestore.ordered.todos;
+  return {
+    todos: todos,
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect((ownProps) => [
+    {
+      collection: "todos",
+      orderBy: ["date", "desc"],
+    },
+  ])
+)(TaskTable);
