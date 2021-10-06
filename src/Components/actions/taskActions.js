@@ -1,27 +1,25 @@
 export const addTask =
   (task) =>
-  (dispatch, getState, { getFirebase }) => {
+  async (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
     const authorId = getState().firebase.auth.uid;
-    firestore
-      .collection("todos")
-      .add({
+    try {
+      const res = await firestore.collection("todos").add({
         task: task,
         authorId: authorId,
         date: new Date(),
-      })
-      .then(() => {
-        dispatch({
-          type: "ADD_TASK",
-          task,
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: "ADD_TASK_ERROR",
-          err,
-        });
       });
+      dispatch({
+        type: "ADD_TASK",
+        task,
+      });
+      return res;
+    } catch (err) {
+      dispatch({
+        type: "ADD_TASK_ERROR",
+        err,
+      });
+    }
   };
 
 export const removeTask =

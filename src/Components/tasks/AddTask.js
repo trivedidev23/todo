@@ -12,7 +12,11 @@ const AddTask = ({ addTask }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(task);
+
+    addTask(task).then((res) => {
+      setTask("");
+    });
+
     // document.getElementById("addTaskForm").reset();
   };
   return (
