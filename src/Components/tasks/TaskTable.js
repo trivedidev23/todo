@@ -32,6 +32,7 @@ const mapStateToProps = (state) => {
   const todos = state.firestore.ordered.todos;
   return {
     todos: todos,
+    uid: state.firebase.auth.uid,
   };
 };
 
@@ -40,6 +41,7 @@ export default compose(
   firestoreConnect((ownProps) => [
     {
       collection: "todos",
+      where: ["authorId", "==", ownProps.uid],
       orderBy: ["date", "desc"],
     },
   ])
